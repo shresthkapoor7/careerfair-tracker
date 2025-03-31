@@ -322,3 +322,65 @@ label {
     font-size: 0.9rem;
   }
 }
+
+/* Company List Styles */
+.companies-list {
+  margin-top: 1rem;
+}
+
+.company-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.company-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #111827;
+}
+
+.skills-container {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.skills-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.no-skills {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.deadline {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+/* Add these styles to your existing CSS */

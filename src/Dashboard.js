@@ -49,7 +49,7 @@ function Dashboard({ onLogout }) {
 
   // If showHome is true, render the Home component instead
   if (showHome) {
-    return <Home user={user} onLogout={onLogout} />;
+    return <Home user={user} apiKey={apiKey} onLogout={onLogout} />;
   }
 
   return (
