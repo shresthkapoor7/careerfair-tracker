@@ -384,4 +384,11 @@ label {
   color: #4b5563;
 }
 
-/* Add these styles to your existing CSS */
+.app-title {
+  color: #111827;
+  transition: color 0.3s ease;
+}
+
+.app-title:hover {
+  color: #3b82f6; /* Tailwind blue-500 */
+}
