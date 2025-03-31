@@ -38,14 +38,6 @@ function Home({ user, onLogout }) {
     setCompanyLink("");
   };
 
-  // Mock function for barcode scanning
-  const handleScanComplete = (result) => {
-    console.log("Barcode scanned:", result);
-    setShowBarcodeScanner(false);
-    // Process the barcode result here
-    alert("Company barcode scanned successfully!");
-  };
-
   return (
     <div className="container">
       <div className="card">
@@ -54,7 +46,7 @@ function Home({ user, onLogout }) {
 
         <div className="dashboard-section">
           <h3>Your Applications</h3>
-          <div className="card">
+          <div className="card inner-card">
             {!showAddOptions && !showBarcodeScanner && !showLinkInput ? (
               <>
                 <p>You haven't tracked any applications yet.</p>
@@ -68,41 +60,63 @@ function Home({ user, onLogout }) {
             ) : showAddOptions ? (
               <div className="add-options">
                 <h4>How would you like to add a company?</h4>
-                <div className="options-buttons">
+                <div className="options-container">
                   <button
                     className="option-btn scan-btn"
                     onClick={handleScanBarcode}
                   >
-                    Scan Barcode
+                    <span>Scan Barcode</span>
                   </button>
                   <button
                     className="option-btn link-btn"
                     onClick={handlePasteLink}
                   >
-                    Paste Company Link
+                    <span>Paste Company Link</span>
                   </button>
                 </div>
-                <button
-                  className="cancel-btn"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
+                <div className="cancel-container">
+                  <button
+                    className="cancel-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            ) : showBarcodeScanner ? (
+            ) : showLinkInput ? (
+              <div className="link-input">
+                <h4>Enter Company Link</h4>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="input"
+                    value={companyLink}
+                    onChange={(e) => setCompanyLink(e.target.value)}
+                    placeholder="https://company.com/careers"
+                    required
+                  />
+                </div>
+                <div className="form-buttons">
+                  <button
+                    onClick={handleLinkSubmit}
+                    className="add-company-submit-btn"
+                  >
+                    Add Company
+                  </button>
+                  <button
+                    className="cancel-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
               <div className="barcode-scanner">
                 <h4>Scan Company Barcode</h4>
                 <div className="scanner-container">
-                  {/* This would be replaced with an actual barcode scanner component */}
                   <div className="mock-scanner">
                     <p>Camera access required</p>
-                    {/* Mock button to simulate scanning */}
-                    <button
-                      onClick={() => handleScanComplete("COMPANY12345")}
-                      className="scan-complete-btn"
-                    >
-                      Simulate Successful Scan
-                    </button>
                   </div>
                 </div>
                 <button
@@ -111,37 +125,6 @@ function Home({ user, onLogout }) {
                 >
                   Cancel
                 </button>
-              </div>
-            ) : (
-              <div className="link-input">
-                <h4>Enter Company Link</h4>
-                <form onSubmit={handleLinkSubmit}>
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="input"
-                      value={companyLink}
-                      onChange={(e) => setCompanyLink(e.target.value)}
-                      placeholder="https://company.com/careers"
-                      required
-                    />
-                  </div>
-                  <div className="form-buttons">
-                    <button
-                      type="submit"
-                      className="submit-btn"
-                    >
-                      Add Company
-                    </button>
-                    <button
-                      type="button"
-                      className="cancel-btn"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
               </div>
             )}
           </div>
