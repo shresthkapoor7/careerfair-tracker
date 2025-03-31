@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
+import QrScanner from "react-qr-barcode-scanner";
 
 function Home({ user, apiKey, onLogout }) {
   const [showAddOptions, setShowAddOptions] = useState(false);
@@ -9,6 +10,9 @@ function Home({ user, apiKey, onLogout }) {
   const [companyLink, setCompanyLink] = useState("");
   const [companies, setCompanies] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [scannedUrl, setScannedUrl] = useState("");
+  const [scanError, setScanError] = useState("");
+  const [scannerError, setScannerError] = useState(false);
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -71,6 +75,38 @@ function Home({ user, apiKey, onLogout }) {
 
     setCompanyLink("");
     setShowLinkInput(false);
+  };
+
+  const handleScannedUrl = async (scannedUrl) => {
+    if (!scannedUrl) return;
+
+    const alreadyExists = companies.some((c) => c.link === scannedUrl);
+    if (alreadyExists) {
+      alert("This company is already added.");
+      return;
+    }
+
+    const encodedLink = encodeURIComponent(scannedUrl);
+    const apiUrl = `https://backend-job-tracker.onrender.com/parse-job?url=${encodedLink}&api_key=${apiKey}`;
+
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      const userCompaniesRef = collection(db, "users", user.uid, "companies");
+      await addDoc(userCompaniesRef, { ...data, link: scannedUrl });
+
+      setCompanies((prev) => [...prev, { ...data, link: scannedUrl }]);
+      alert("Scanned and added successfully!");
+
+      // ✅ Move camera removal after successful save
+      setShowBarcodeScanner(false);
+      setScannedUrl("");
+      setScannerError(false);
+    } catch (error) {
+      console.error("Error parsing scanned URL:", error);
+      alert("Failed to parse scanned URL.");
+    }
   };
 
   const handleCancel = () => {
@@ -136,11 +172,17 @@ function Home({ user, apiKey, onLogout }) {
               <h4>How would you like to add a company?</h4>
               <div className="options-container">
                 {isMobile && (
-                  <button className="option-btn scan-btn" onClick={handleScanBarcode}>
+                  <button
+                    className="option-btn scan-btn"
+                    onClick={handleScanBarcode}
+                  >
                     <span>Scan Barcode</span>
                   </button>
                 )}
-                <button className="option-btn link-btn" onClick={handlePasteLink}>
+                <button
+                  className="option-btn link-btn"
+                  onClick={handlePasteLink}
+                >
                   <span>Paste Company Link</span>
                 </button>
               </div>
@@ -166,7 +208,10 @@ function Home({ user, apiKey, onLogout }) {
                 />
               </div>
               <div className="form-buttons">
-                <button onClick={handleLinkSubmit} className="add-company-submit-btn">
+                <button
+                  onClick={handleLinkSubmit}
+                  className="add-company-submit-btn"
+                >
                   Add Company
                 </button>
                 <button className="cancel-btn" onClick={handleCancel}>
@@ -178,12 +223,64 @@ function Home({ user, apiKey, onLogout }) {
 
           {showBarcodeScanner && (
             <div className="barcode-scanner">
-              <h4>Scan Company Barcode</h4>
-              <div className="scanner-container">
-                <div className="mock-scanner">
-                  <p>Camera access required</p>
+              <h4>Scan Company QR Code or Barcode</h4>
+
+              <QrScanner
+                onUpdate={(err, result) => {
+                  if (result) {
+                    setScannedUrl(result.text);
+                    setScannerError(false); // ✅ Hide error when valid result comes
+                  } else if (err && !scannedUrl) {
+                    setScannerError(true); // ✅ Only show error when no valid link yet
+                    console.warn("Scanner error:", err);
+                  }
+                }}
+                facingMode="environment"
+                style={{ width: "100%" }}
+              />
+              {scannedUrl && (
+                <div style={{ marginTop: "1rem", textAlign: "center" }}>
+                  <p style={{ fontWeight: 500 }}>Scanned Link:</p>
+                  <a
+                    href={scannedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-block",
+                      maxWidth: "100%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      color: "#2563eb",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {scannedUrl}
+                  </a>
+
+                  <div style={{ marginTop: "1rem" }}>
+                    <button
+                      className="add-company-submit-btn"
+                      onClick={() => handleScannedUrl(scannedUrl)}
+                    >
+                      Add Company
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {scannerError && !scannedUrl && (
+                <p
+                  style={{
+                    color: "red",
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  Scanner error. Try again.
+                </p>
+              )}
+
               <button className="cancel-btn" onClick={handleCancel}>
                 Cancel
               </button>
