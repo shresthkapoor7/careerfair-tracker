@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged
 } from "firebase/auth";
-import "./App.css"; // using your existing CSS classes
+import "./App.css";
+import Dashboard from "./Dashboard";
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(auth.currentUser || null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const signUp = async () => {
     try {
@@ -37,42 +46,15 @@ function App() {
 
   return (
     <div className="app">
-      <div className="container" style={{ maxWidth: "600px", marginTop: "3rem" }}>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: "600", marginBottom: "1.5rem" }}>
-          CareerFair Tracker Login
-        </h1>
+      <div className="container">
+        <h1 className="heading">CareerFair Tracker Login</h1>
 
-        <div style={{
-          background: "#fff",
-          padding: "2rem",
-          border: "1px solid #e5e7eb",
-          borderRadius: "12px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
-        }}>
+        <div className="card">
           {user ? (
-            <>
-              <p style={{ marginBottom: "1.5rem" }}>
-                Welcome, <strong>{user.email}</strong>
-              </p>
-              <button
-                onClick={logout}
-                style={{
-                  background: "#ef4444",
-                  color: "#fff",
-                  padding: "0.75rem 1.5rem",
-                  borderRadius: "8px",
-                  border: "none",
-                  width: "100%",
-                  fontWeight: "500",
-                  cursor: "pointer"
-                }}
-              >
-                Logout
-              </button>
-            </>
+            <Dashboard user={user} onLogout={logout} />
           ) : (
             <>
-              <div className="input-group" style={{ marginBottom: "1rem" }}>
+              <div className="input-group">
                 <label>Email</label>
                 <input
                   type="email"
@@ -82,7 +64,7 @@ function App() {
                   placeholder="you@example.com"
                 />
               </div>
-              <div className="input-group" style={{ marginBottom: "1.5rem" }}>
+              <div className="input-group">
                 <label>Password</label>
                 <input
                   type="password"
@@ -92,35 +74,11 @@ function App() {
                   placeholder="••••••••"
                 />
               </div>
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <button
-                  onClick={signIn}
-                  className="button-primary"
-                  style={{
-                    background: "#3b82f6",
-                    color: "#fff",
-                    padding: "0.75rem 1rem",
-                    borderRadius: "8px",
-                    border: "none",
-                    flex: 1,
-                    cursor: "pointer"
-                  }}
-                >
+              <div className="button-row">
+                <button className="button-primary" onClick={signIn}>
                   Sign In
                 </button>
-                <button
-                  onClick={signUp}
-                  className="button-secondary"
-                  style={{
-                    background: "#10b981",
-                    color: "#fff",
-                    padding: "0.75rem 1rem",
-                    borderRadius: "8px",
-                    border: "none",
-                    flex: 1,
-                    cursor: "pointer"
-                  }}
-                >
+                <button className="button-secondary" onClick={signUp}>
                   Sign Up
                 </button>
               </div>
