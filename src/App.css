@@ -251,6 +251,7 @@ label {
 }
 
 .form-buttons {
+  flex-direction: column;
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
