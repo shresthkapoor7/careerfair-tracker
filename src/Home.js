@@ -5,9 +5,8 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
-  query,
-  where,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import QrScanner from "react-qr-barcode-scanner";
 
@@ -19,7 +18,6 @@ function Home({ user, apiKey, onLogout }) {
   const [companies, setCompanies] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [scannedUrl, setScannedUrl] = useState("");
-  const [scanError, setScanError] = useState("");
   const [scannerError, setScannerError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,10 +53,12 @@ function Home({ user, apiKey, onLogout }) {
 
   useEffect(() => {
     fetchCompanies();
-  }, [user]);
+  });
 
   const handleDeleteCompany = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this company?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this company?"
+    );
     if (!confirmed) return;
 
     try {
@@ -68,6 +68,20 @@ function Home({ user, apiKey, onLogout }) {
     } catch (error) {
       console.error("Failed to delete company:", error);
       alert("Failed to delete the company entry.");
+    }
+  };
+
+  const handleCheckboxChange = async (id, currentValue) => {
+    try {
+      const companyDocRef = doc(db, "users", user.uid, "companies", id);
+      await updateDoc(companyDocRef, { applied: !currentValue });
+      setCompanies((prev) =>
+        prev.map((company) =>
+          company.id === id ? { ...company, applied: !currentValue } : company
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update checkbox:", error);
     }
   };
 
@@ -90,11 +104,12 @@ function Home({ user, apiKey, onLogout }) {
       const docRef = await addDoc(userCompaniesRef, {
         ...data,
         link: companyLink,
+        applied: false,
       });
 
       setCompanies((prev) => [
         ...prev,
-        { ...data, link: companyLink, id: docRef.id },
+        { ...data, link: companyLink, id: docRef.id, applied: false },
       ]);
       alert("Company added and saved successfully!");
     } catch (error) {
@@ -125,11 +140,12 @@ function Home({ user, apiKey, onLogout }) {
       const docRef = await addDoc(userCompaniesRef, {
         ...data,
         link: scannedUrl,
+        applied: false,
       });
 
       setCompanies((prev) => [
         ...prev,
-        { ...data, link: scannedUrl, id: docRef.id },
+        { ...data, link: scannedUrl, id: docRef.id, applied: false },
       ]);
       alert("Scanned and added successfully!");
     } catch (error) {
@@ -170,19 +186,29 @@ function Home({ user, apiKey, onLogout }) {
                     }}
                   >
                     <h4 style={{ margin: 0 }}>{company.company}</h4>
-                    <button
-                      onClick={() => handleDeleteCompany(company.id)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "#ef4444",
-                        fontSize: "1.2rem",
-                      }}
-                      title="Delete"
-                    >
-                      🗑️
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <input
+                        type="checkbox"
+                        checked={company.applied || false}
+                        onChange={() =>
+                          handleCheckboxChange(company.id, company.applied)
+                        }
+                        title="Mark as applied"
+                      />
+                      <button
+                        onClick={() => handleDeleteCompany(company.id)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#ef4444",
+                          fontSize: "1.2rem",
+                        }}
+                        title="Delete"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
 
                   {company.role && (
@@ -208,6 +234,8 @@ function Home({ user, apiKey, onLogout }) {
                     </a>
                   )}
 
+                  {/* Removed the checkbox from here */}
+
                   {company.skills && company.skills.length > 0 ? (
                     <div className="skills-container">
                       <p className="skills-label">Required Skills:</p>
@@ -222,6 +250,7 @@ function Home({ user, apiKey, onLogout }) {
                   ) : (
                     <p className="no-skills">No specific skills required</p>
                   )}
+
                   <p className="deadline">Deadline: {company.deadline}</p>
                 </div>
               ))}
@@ -374,11 +403,10 @@ function Home({ user, apiKey, onLogout }) {
             </>
           )}
         </div>
-
-        <button className="button-danger" onClick={onLogout}>
-          Log Out
-        </button>
       </div>
+      <button className="button-danger" onClick={onLogout}>
+        Log Out
+      </button>
     </div>
   );
 }
