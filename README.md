@@ -10,7 +10,7 @@ Built with **React**, **Firebase**, and **Gemini API** 💡
 
 ### 1. Clone the Repo
 ```bash
-git clone https://github.com/your-username/trackmate.git
+git clone https://github.com/shresthkapoor7/careerfair-tracker.git
 cd trackmate
 ```
 
