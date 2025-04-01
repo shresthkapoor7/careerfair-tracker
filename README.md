@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# 🚀 TrackMate: Career Fair Job Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TrackMate is your personal assistant for career fairs — scan QR codes or paste job links to instantly save job postings, deadlines, and skill requirements to your dashboard.
 
-## Available Scripts
+Built with **React**, **Firebase**, and **Gemini API** 💡
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🔧 Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Clone the Repo
+```bash
+git clone https://github.com/your-username/trackmate.git
+cd trackmate
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-### `npm test`
+### 3. Add Firebase Config
+Create a `.env` file at the root with your Firebase config:
+```
+REACT_APP_FIREBASE_API_KEY=your-api-key
+REACT_APP_FIREBASE_AUTH_DOMAIN=...
+REACT_APP_FIREBASE_PROJECT_ID=...
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> ✅ Make sure your Firestore is set up in **Test Mode** initially. You can update rules later for production.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Running Locally
+```bash
+npm start
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ✨ Features
 
-### `npm run eject`
+- 📥 Scan QR code or paste job link
+- 🔍 Auto-parses job details (company, role, deadline, skills)
+- ✅ Checkbox to mark "Applied"
+- 🗑️ Delete invalid or duplicate entries
+- 🔐 Firebase-authenticated per-user database
+- 📱 Mobile ready + QR scanner support
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📦 Production Build
+```bash
+npm run build
+```
+This builds the app for production in the `build` folder.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📄 Learn More
+- [React Docs](https://reactjs.org/)
+- [Firebase Docs](https://firebase.google.com/docs)
+- [Create React App Docs](https://create-react-app.dev/)
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🛠 Tech Stack
+- React
+- Firebase (Auth + Firestore)
+- Gemini API (Google AI Studio)
+- QrScanner (react-qr-barcode-scanner)
+- Tailwind (optional styling)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 💡 Usage Tips
+- Use on mobile to enable QR code scanning
+- Paste your Gemini API key to parse job links
+- All your data is securely tied to your Firebase user account
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🙌 Contributions
+Open to suggestions or pull requests — let's make this the go-to app for career fairs!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📢 License
+MIT
