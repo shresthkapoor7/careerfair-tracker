@@ -1,90 +1,111 @@
-# 🚀 TrackMate: Career Fair Job Tracker
+# TrackMate 🚀
 
-TrackMate is your personal assistant for career fairs — scan QR codes or paste job links to instantly save job postings, deadlines, and skill requirements to your dashboard.
-
-Built with **React**, **Firebase**, and **Gemini API** 💡
+**TrackMate** is your personal career fair assistant built with React and Firebase. It helps you **scan QR codes or paste job links** to instantly save and track job opportunities during fast-paced career fairs. Uses Gemini API for job parsing.
 
 ---
 
-## 🔧 Setup Instructions
-
-### 1. Clone the Repo
-```bash
-git clone https://github.com/shresthkapoor7/careerfair-tracker.git
-cd trackmate
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Add Firebase Config
-Create a `.env` file at the root with your Firebase config:
-```
-REACT_APP_FIREBASE_API_KEY=your-api-key
-REACT_APP_FIREBASE_AUTH_DOMAIN=...
-REACT_APP_FIREBASE_PROJECT_ID=...
-```
-
-> ✅ Make sure your Firestore is set up in **Test Mode** initially. You can update rules later for production.
+### 🔗 Backend Available At
+👉 [https://github.com/shresthkapoor7/backend-job-tracker](https://github.com/shresthkapoor7/backend-job-tracker)
 
 ---
 
-## 🚀 Running Locally
-```bash
-npm start
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 📸 Features
+
+- 🔍 Parse job listings using [Gemini API](https://makersuite.google.com/app)
+- 📷 Scan company job QR codes at career fairs
+- 🔗 Paste a company job URL directly
+- 🧠 Auto-extracts company, role, skills, and deadline
+- ✅ Mark companies as *applied*
+- 🗑️ Delete irrelevant or duplicate companies
+- 🔐 Secure per-user data storage with Firebase Firestore
+- 📱 Mobile friendly (camera-based QR scanner support)
+- 🧠 Fun rotating messages to keep you motivated
 
 ---
 
-## ✨ Features
+## 🪪 Tech Stack
 
-- 📥 Scan QR code or paste job link
-- 🔍 Auto-parses job details (company, role, deadline, skills)
-- ✅ Checkbox to mark "Applied"
-- 🗑️ Delete invalid or duplicate entries
-- 🔐 Firebase-authenticated per-user database
-- 📱 Mobile ready + QR scanner support
-
----
-
-## 📦 Production Build
-```bash
-npm run build
-```
-This builds the app for production in the `build` folder.
-
----
-
-## 📄 Learn More
-- [React Docs](https://reactjs.org/)
-- [Firebase Docs](https://firebase.google.com/docs)
-- [Create React App Docs](https://create-react-app.dev/)
-
----
-
-## 🛠 Tech Stack
-- React
-- Firebase (Auth + Firestore)
+- React (Frontend)
+- Firebase Authentication
+- Firebase Firestore
 - Gemini API (Google AI Studio)
-- QrScanner (react-qr-barcode-scanner)
-- Tailwind (optional styling)
+- Vite (for build tooling)
+- CSS Modules + Tailwind-like styling
 
 ---
 
-## 💡 Usage Tips
-- Use on mobile to enable QR code scanning
-- Paste your Gemini API key to parse job links
-- All your data is securely tied to your Firebase user account
+## 🛠 Setup Instructions
+
+1. Clone this repo:
+   ```bash
+   git clone https://github.com/your-username/trackmate.git
+   cd trackmate
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Setup Firebase:
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Create a new project and Firestore DB (in *test mode* initially)
+   - Enable Firebase Authentication (Email/Password)
+   - Replace your Firebase config inside `firebase.js`
+
+4. Setup Gemini API:
+   - Go to [Google AI Studio](https://makersuite.google.com/)
+   - Generate an API key and paste it into the app after signing in
+
+5. Run the development server:
+   ```bash
+   npm start
+   ```
 
 ---
 
-## 🙌 Contributions
-Open to suggestions or pull requests — let's make this the go-to app for career fairs!
+## 🚀 Deployment
+
+You can deploy the frontend using:
+- **Netlify**, **Vercel**, or **GitHub Pages**
+
+Make sure Firebase Firestore Rules are tightened before going live:
+```js
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      match /companies/{companyId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
+```
 
 ---
 
-## 📢 License
-MIT
+## 💡 How to Use
+
+1. 📝 Sign up or sign in using your email and password.
+2. 🔑 Paste your Gemini API key on the next screen.
+3. 📅 Add companies via QR scan or link paste.
+4. ✅ Mark them as applied when done.
+5. 🔍 All your saved applications show up on your dashboard.
+6. 🗑️ You can delete entries if no longer needed.
+
+---
+
+## 👤 Author
+
+**Shresth Kapoor**
+GitHub: [@shresthkapoor7](https://github.com/shresthkapoor7)
+Email: shresthkapoor7@gmail.com
+
+---
+
+## 📃 License
+
+This project is licensed under the MIT License.
+
