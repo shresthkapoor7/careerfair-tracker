@@ -24,7 +24,8 @@ function App() {
   ];
 
   const getBannerStyle = (message) => {
-    if (message.includes("Work in Progress")) {
+    const msg = typeof message === "string" ? message : "";
+    if (msg.includes("Work in Progress")) {
       return {
         background: "#fee2e2",
         border: "1px solid #f87171",
@@ -205,6 +206,26 @@ function App() {
             </div>
           )}
         </div>
+
+        {/* GitHub link at the bottom */}
+        <p
+          style={{
+            marginTop: "2rem",
+            textAlign: "center",
+            fontSize: "0.95rem",
+            color: "#2563eb",
+          }}
+        >
+          📦 Code available on{" "}
+          <a
+            href="https://github.com/shresthkapoor7/careerfair-tracker"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "underline" }}
+          >
+            GitHub ↗
+          </a>
+        </p>
       </div>
     </div>
   );
