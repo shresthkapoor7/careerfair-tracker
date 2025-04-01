@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/careerfair-tracker/static/css/main.0b18331d.css",
-    "main.js": "/careerfair-tracker/static/js/main.4f046098.js",
+    "main.js": "/careerfair-tracker/static/js/main.fe76c58a.js",
     "static/js/453.de5f1fbc.chunk.js": "/careerfair-tracker/static/js/453.de5f1fbc.chunk.js",
     "index.html": "/careerfair-tracker/index.html",
     "main.0b18331d.css.map": "/careerfair-tracker/static/css/main.0b18331d.css.map",
-    "main.4f046098.js.map": "/careerfair-tracker/static/js/main.4f046098.js.map",
+    "main.fe76c58a.js.map": "/careerfair-tracker/static/js/main.fe76c58a.js.map",
     "453.de5f1fbc.chunk.js.map": "/careerfair-tracker/static/js/453.de5f1fbc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0b18331d.css",
-    "static/js/main.4f046098.js"
+    "static/js/main.fe76c58a.js"
   ]
 }
